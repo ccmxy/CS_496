@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Assignment 1</title>
+        <script type="text/javascript" src="date_time.js"></script>
+        <script type="text/javascript" src="scripts.js"></script>
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+    </head>
+    <body>
+          <div class="center-maker">
+            <span id="this_date_time" class="date" ></span>
+          </div>
+            <script type="text/javascript">window.onload = date_time('this_date_time');</script>
+
+            <fieldset>
+              <legend>Let's hear about you!</legend>
+
+          <form>
+            <div class="formBox" style="border:2px solid blue;">
+              <span class="inputLabel"> Name: </span> <br>
+                <input type=text style="margin: 1em;">
+            </div>
+
+            <div class="formBox" style="border:2px solid green;">
+              <label for="rangeVal">Age:</label>
+              <input type ="range" max="100" min="0"
+                  onchange="document.getElementById('rangeValLabel').innerHTML = this.value;"
+                  step="1" name="rangeVal" id="rangeVal" value="200">
+              </input>
+              <em id="rangeValLabel" style="font-style: normal;"></em>
+            </div>
+
+          <div class="formBox">
+              <span class="inputLabel"> Sex: </span> <br>
+              <input type="radio" style="vertical-align: middle" name="gender" value="male" checked> Male<br>
+              <input type="radio" style="vertical-align: middle" name="gender" value="female"> Female<br>
+              <input type="radio" name="gender" value="other"> Other<br>
+          </div>
+
+          <div class="formBox" style="border:2px solid yellow;">
+              <span class="inputLabel"> What you've come here for: </span> <br>
+              <input type="checkbox" name="whyYouCame" value="SayHello">To say hello<br>
+              <input type="checkbox" name="whyYouCame" value="GradeAssignment">To grade an assignment<br>
+              <input type="checkbox" name="whyYouCame" value="ForFun">Just for fun
+          </div>
+
+          <div class="formBox" style="border:2px solid blue;">
+            <span class="inputLabel"> Lucky number: </span> <br>
+              <input type=number style="margin: 1em;">
+          </div>
+        </form>
+      </fieldset>
+
+        <div class="box">Lorem</div>
+<div class="box">Ipsum</div>
+<div class="box">But how!</div>
+
+
+
+
+    </body>
+</html>

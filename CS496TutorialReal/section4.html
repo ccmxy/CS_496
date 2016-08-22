@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Creating the Model</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="index.html">
+                      Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="section3.html">Getting Started with Parse.com</a>
+                </li>
+                <li>
+                    <a href="section4.html">Creating the Marker Model</a>
+                </li>
+                <li>
+                    <a href="section5.html">Using User Input</a>
+                </li>
+                <li>
+                    <a href="section6.html">Using Google Maps</a>
+                </li>
+                <li>
+                    <a href="section7.html">Retrieving Objects</a>
+                </li>
+                <li>
+                    <a href="section8.html">Tying it all Together</a>
+                </li>
+                <li>
+                    <a href="section9.html">References</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Creating the Marker Model</h1>
+                        <p>In the project view of your Android applicaton, we will <strong>create a class called SpecialMaps.java</strong> that we will use
+  																as a model for our Parse objects.</p>
+  															<p>	I like to put models in their own package called "Models" (you can create a new package
+  																 by <strong>right-clicking app-->java-->com.packagename </strong> and <strong>selecting new-->package</strong>). Just to keep the code organized.</p>
+
+  																 <p>
+  															 If you created the Models package, you should then <strong>right click on Models and select new--> Java class. Name this class
+  														 SpecialMap.java. </strong>This is going to
+  														 be a Java object that we use to interact with our Parse.com data without needing to include all the fancy Parse.com footwork in our
+  														 activity code. </p>
+
+
+  																<p>Next, paste in this code. I explain how it works in detail a couple sections from now.</p>
+
+  																<div class="android-demo">
+
+  																<xmp>import package com.<YourPackageName>.Models;</xmp>
+  																import android.app.Activity;
+  																<br>import com.parse.FindCallback;
+  																<br>import com.parse.ParseClassName;
+  																<br>import com.parse.ParseObject;
+  																<br>import com.parse.ParseQuery;
+  																<br>import java.util.List;
+  																<br>
+  																<br>@ParseClassName("SpecialMap")
+  																<br>public class SpecialMap extends ParseObject {
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;private static List<SpecialMap> mSpecialMaps;
+  <br>
+  																			<br>&nbsp;&nbsp;	/*
+  																			<br>&nbsp;&nbsp;	This is the default constructor.
+  																			<br>&nbsp;&nbsp;	NOTE: Android Studio will grey the name out because it doesn't
+  																			<br>&nbsp;&nbsp;	see it being used, but trust me, if you try to use the other constructor
+  																			<br>&nbsp;&nbsp;			 with our without this here, it will not work:
+  																			<br>&nbsp;&nbsp;	*/
+  																			<br>&nbsp;&nbsp;  public SpecialMap(){
+  																			<br>&nbsp;&nbsp;&nbsp;&nbsp;	super();
+  																			<br>&nbsp;&nbsp;	}
+  																			<br>&nbsp;&nbsp;
+  																			<br>&nbsp;&nbsp;
+  																			<br>&nbsp;&nbsp;	// Constructor to create with new SpecialMap object:
+  																			<br>&nbsp;&nbsp;	public SpecialMap(double latitude, double longitude, String msg){
+  																			<br>&nbsp;&nbsp;&nbsp;&nbsp;				put("latitude", latitude);
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;					put("longitude", longitude);
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;					put("msg", msg);
+  																			<br>&nbsp;&nbsp;	}
+  																			<br>&nbsp;&nbsp;
+  																			<br>&nbsp;&nbsp;
+  																			<br>&nbsp;&nbsp; //Save the map
+  																			<br>&nbsp;&nbsp;	public void saveSpecialMap() {
+  																			<br>&nbsp;&nbsp;&nbsp;&nbsp;			saveInBackground();
+  																			<br>&nbsp;&nbsp;	}
+  																			<br>&nbsp;&nbsp;
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;//A query that's run in findAllSpecialMaps:
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;public static ParseQuery<SpecialMap> specialMapsListQuery() {
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return ParseQuery.getQuery(SpecialMap.class)
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.orderByAscending("name");
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;}
+  																		<br>&nbsp;&nbsp;
+  																		<br>&nbsp;&nbsp;
+
+  																	<br>&nbsp;&nbsp;	/* This function is run with a runnable that's created on the main ui thread
+  																	<br>&nbsp;&nbsp; (but we don't need to use a runnable, I'll explain later): */
+  																	<br>&nbsp;&nbsp;	public static void findAllSpecialMaps(final String tag, final Activity context, final Runnable runnable) {
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;		specialMapsListQuery().findInBackground(new FindCallback<SpecialMap>() {
+  																			<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Override
+  																			<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		public void done(List<SpecialMap> specialMaps, com.parse.ParseException e) {
+  																			<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;					if (e == null) {
+  																				<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;							mSpecialMaps = specialMaps;
+  																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;							context.runOnUiThread(runnable);
+  																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			} else {
+  																						<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;					ErrorHelper.handleError(tag, context, e.getMessage());
+  																				<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;						}
+  																			<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				}
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp;			});
+  																	<br>&nbsp;&nbsp;	}
+  																	<br>&nbsp;&nbsp;
+  																	<br>&nbsp;&nbsp;	//This is called in the runnable that's sent into findAllSpecialMaps.
+  																	<br>&nbsp;&nbsp;	public static List<SpecialMap> getSpecialMaps() {
+  																		<br>&nbsp;&nbsp;&nbsp;&nbsp; return mSpecialMaps;
+  																	<br>&nbsp;&nbsp;	}
+  																	<br>&nbsp;&nbsp;
+  															<br>	} // end of class
+  														</div>
+
+  														<p>	Now let's test the model out.
+
+  														Add this line inside of the onCreate() method in MainActivity.java to use the class:</p>
+
+  												 <p><code>        ParseObject.registerSubclass(SpecialMap.class);</code></p>
+
+
+  												 <p> You only need the above line in one activity-- you can now use the SpecialMaps class we just made in
+  													  any activity that you visit after visiting this one. Remember though, the code we added
+  													to onCreate() in the previous section <strong>must</strong> be deleted, or else that line will crash the app.</p>
+
+  													<p> Now, below the Parse.registerSubclass line, add the following lines: </p>
+
+  													<p><code> &nbsp; SpecialMap newSpecialMap = new SpecialMap(122.6765, 45.523, "Testing SpecialMap model");</code></p>
+  														<p><code>&nbsp;	newSpecialMap.saveSpecialMap();</code></p>
+
+
+  														<p> If SpecialMap is underlined in red, you need to import the SpecialMap.model class (above the class declaration).</p>
+
+  														<p> Now run the project and check your database at your dashboard on Parse.com again. If it worked, you should see the new row in the SpecialMap class:</p>
+  														<img class="medium" src="img/TestingMapModel.png">
+
+  														<p>For reference, here is what my MainActivity looks like at this point (I cleaned up stuff like toolbar and floating action button that I didn't use):</p>
+
+
+  <div class="android-demo">
+
+  <br>														package com.example.colleenminor.communitymapexample;
+  <br>
+  <br>														import android.os.Bundle;
+  <br>														import android.support.v7.app.AppCompatActivity;
+  <br>														import android.view.Menu;
+  <br>														import android.view.MenuItem;
+  <br>
+  <br>														import com.example.colleenminor.communitymapexample.Models.SpecialMap;
+  <br>														import com.parse.ParseObject;
+  <br>
+  <br>														public class MainActivity extends AppCompatActivity {
+  <br>
+  <br>&nbsp;&nbsp;														    @Override
+  <br>&nbsp;&nbsp;														    protected void onCreate(Bundle savedInstanceState) {
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;														        super.onCreate(savedInstanceState);
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;														        setContentView(R.layout.activity_main);
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;																		/**** Register parse subclass and create and save SpecialMap object: ****/
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;														        ParseObject.registerSubclass(SpecialMap.class);
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;																		SpecialMap newSpecialMap = new SpecialMap(122.6765, 45.523, "Testing SpecialMap model");
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;																		newSpecialMap.saveSpecialMap();
+  <br>&nbsp;&nbsp;
+  <br>&nbsp;&nbsp;														    }
+  <br>&nbsp;&nbsp;
+  <br>														}
+  </div>
+
+
+  														<p> Now, let's add to the database from user input.</p>
+
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

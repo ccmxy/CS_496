@@ -1,0 +1,13 @@
+ body {
+	text-align: center;
+	font-size: 16px;
+	padding: 4em 2em 3em;
+  background:  #444444;
+}
+ .date {
+  color: #FEBD69;
+	font-size: 2.625em;
+	line-height: 1.3;
+	margin: 0;
+	font-weight: 700;
+}

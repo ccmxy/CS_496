@@ -1,0 +1,48 @@
+ body {
+	font-size: 16px;
+	padding: 4em 2em 3em;
+  background:  #444444;
+}
+
+.center-maker {
+  text-align: center;
+}
+
+ .date {
+  align-self: center;
+  color: #FEBD69;
+	font-size: 2.625em;
+	line-height: 1.3;
+	margin: 0;
+	font-weight: 700;
+}
+
+.formBox {
+   border:2px solid red;
+   float:left;
+   margin-left: 10px;
+   margin-top: 10px;
+   padding: 5px;
+
+}
+
+.inputLabel {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+input[type='radio'], label{
+    vertical-align:  left;
+    padding: 10px;
+    margin: 10px;
+ }
+
+
+ .box {
+    float: left;
+    width: 200px;
+    margin-left: 10px;
+    margin-top: 10px;
+    padding: 5px;
+    border: 2px solid blue;
+}

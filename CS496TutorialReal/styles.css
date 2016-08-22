@@ -1,0 +1,19 @@
+img.small{
+  max-width: 500px;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  margin: 10px;
+}
+
+img.medium{
+  max-width: 1000px;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  margin: 10px;
+}
+
+.android-demo{background-color: white;height:300px;width:1100px;margin:0.5em 0;padding:1em;font-family:Consolas,Monaco,'Andale Mono',monospace;color: #2C3539;border:0.3em solid #545454;border-radius:0.5em;background:white repeat scroll 0 0 #141414;box-shadow:1px 1px 0.5em black inset;overflow:auto}
+
+.xml-demo{background-color: white;height:300px;width:1100px;margin:0.5em 0;padding:1em;font-family:Consolas,Monaco,'Andale Mono',monospace;color: #0200FF;border:0.3em solid #545454;border-radius:0.5em;background:white repeat scroll 0 0 #141414;box-shadow:1px 1px 0.5em black inset;overflow:auto}

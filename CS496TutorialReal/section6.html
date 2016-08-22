@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Creating the Model</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+      <div id="sidebar-wrapper">
+          <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="index.html">
+                    Introduction
+                  </a>
+              </li>
+              <li>
+                  <a href="section3.html">Getting Started with Parse.com</a>
+              </li>
+              <li>
+                  <a href="section4.html">Creating the Marker Model</a>
+              </li>
+              <li>
+                  <a href="section5.html">Using User Input</a>
+              </li>
+              <li>
+                  <a href="section6.html">Using Google Maps</a>
+              </li>
+              <li>
+                  <a href="section7.html">Retrieving Objects</a>
+              </li>
+              <li>
+                  <a href="section8.html">Tying it all Together</a>
+              </li>
+              <li>
+                  <a href="section9.html">References</a>
+              </li>
+          </ul>
+      </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                      <h1>Using Google Maps </h1>
+                                                                      <p>Now it's time to enable Google Maps in our app.</p>
+                                                                      <p>Google requires all apps to be registered with so that it can then send an <strong>authentication token</strong> back to our application. Once received, our application will be able to use this user token via <strong>callback functions</strong>. We'll go over that last.</p>
+
+                      																							<p>	In your <strong>'Module: app' build.gradle file</strong>, add this line:</p>
+                      																								<code>
+                      																								 compile 'com.google.android.gms:play-services:8.4.0'
+                      																							 </code>
+
+                      																	<p>so that we can use google play services (which enables us to use google maps).</p>
+
+                      																	<p>Then, from the navigation bar of your project, click file, mouse over <strong>'new'</strong>, mouse over <strong>Google</strong>, and select '<strong>Google Maps activity</strong>.' Screenshot: </p>
+
+                      																	<p> You can call it whatever you want, but here we'll just stick with the default name, "Maps Activity."
+                      																	Android Studio will generate a page that looks like this:</p>
+                      																	<img class="medium" src="img/mapscreenie.png">
+
+
+                      																	<p> Notice the URL that I've underlined. You need to enter that into browser, log into your Google (gmail)
+                      																	account if you haven't already, and follow these steps: </p>
+
+                      																	<br>1) Hit "continue"
+                      																	<br><img class="small" src="img/hitcontinue.png">
+
+                      																	<br> 2) Wait a minute or so for the project to be created
+                      																	<br><img class="small" src="img/waitforproject.png">
+
+                      																	<br> 3) Hit "go to credentials"
+                      																	<br><img class="small" src="img/gotocredentials.png">
+
+                      																	<br> 4) Hit "create"
+                      																	<br><img class="small" src="img/hitcreate.png">
+
+                      																	<br> 5) Copy the string of letters and numbers under "here is your api key"
+                      																	<br><img class="small" src="img/copykey.png">
+
+                      																	<br> 6) Go back to your google_maps_api.xml file and paste they key where it says "YOUR KEY HERE"
+                      																	<br><img class="small" src="img/pastekey.png">
+
+                      																	<p> We are now free to use Google Maps in our app.</p>
+                      																	<p> If we go to MapsActivy.java file, we will see this: </p>
+
+                      																	<br><img class="small" src="img/MapsActivity.png">
+                      																	<p> As you can see, a map with a marker set to Sydney, Australia has been pre-generated. What we want is to set makers to the latitude and longitude values of
+                      																		our Parse.com SpecialMap objects. We'll do this in the next section.</p>                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

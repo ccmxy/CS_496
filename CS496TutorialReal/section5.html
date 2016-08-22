@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Creating the Model</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="index.html">
+                      Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="section3.html">Getting Started with Parse.com</a>
+                </li>
+                <li>
+                    <a href="section4.html">Creating the Marker Model</a>
+                </li>
+                <li>
+                    <a href="section5.html">Using User Input</a>
+                </li>
+                <li>
+                    <a href="section6.html">Using Google Maps</a>
+                </li>
+                <li>
+                    <a href="section7.html">Retrieving Objects</a>
+                </li>
+                <li>
+                    <a href="section8.html">Tying it all Together</a>
+                </li>
+                <li>
+                    <a href="section9.html">References</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                      <h1>Using User Input</h1>
+
+      <p> Now we're going to create SpecialMap objects based on user input. </p>
+      <p>In your Main Activity, add an EditText of the Number(signed) type give it the id <code> latitudeInput. </code>
+      Set the hint for it as latitude by adding <code class="language-markup"> android:hint="Latitude"</code> in the XML.</p>
+
+      <p> Add another Number(signed) EditText with the id <code>longituideInput</code> with a hint of "longitude", a Plain
+        EditText with an id of <code>msgInput</code> and a hint of "Message,"
+        a button with the text "add marker" (or whatever you want) and leave the id for the button alone
+        (so it has the default id of <code>button</code>).
+      </p>
+
+      <p>Here is what mine looks like:</p>
+
+      <img class="small" src="img/ContentMain.png">
+
+
+    <p>	and the XML for it looks like this:</p>
+<div class="xml-demo">
+
+<xmp><?xml version="1.0" encoding="utf-8"?></xmp>
+<xmp><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"</xmp>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;    xmlns:app="http://schemas.android.com/apk/res-auto"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;    xmlns:tools="http://schemas.android.com/tools"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;    android:layout_width="match_parent"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;    android:layout_height="match_parent"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;    android:paddingBottom="@dimen/activity_vertical_margin"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;    android:paddingLeft="@dimen/activity_horizontal_margin"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;    android:paddingRight="@dimen/activity_horizontal_margin"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;    android:paddingTop="@dimen/activity_vertical_margin"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;    app:layout_behavior="@string/appbar_scrolling_view_behavior"</code>
+<xmp>     tools:context="com.example.colleenminor.communitymapexample.MainActivity"</xmp>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;   tools:showIn="@layout/activity_main"></code>
+<xmp>  <EditText</xmp>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_width="wrap_content"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_height="wrap_content"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:inputType="numberSigned"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:id="@+id/longitudeText"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_marginTop="96dp"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_centerHorizontal="true"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:hint="Longitude" /></code>
+<xmp>  <EditText </xmp>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_width="wrap_content"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_height="wrap_content"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:inputType="numberSigned"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:id="@+id/latitudeInput"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:hint="Latitude"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_below="@+id/longitudeText"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_centerHorizontal="true" /></code>
+<code><br> &nbsp;&nbsp;&nbsp;&nbsp;       android:layout_width="wrap_content"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_height="wrap_content"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:text="Add Marker"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:id="@+id/button"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_below="@+id/latitudeInput"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_centerHorizontal="true"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_marginTop="107dp" /></code>
+<xmp><EditText</xmp>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_width="wrap_content"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_height="wrap_content"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:id="@+id/msgText"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_below="@+id/latitudeInput"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:layout_centerHorizontal="true"</code>
+<code><br>&nbsp;&nbsp;&nbsp;&nbsp;        android:hint="Message" /></code></code>
+<xmp></RelativeLayout></xmp>
+</div>
+
+<p> I reccomend that you run your app to make sure that it still works now.</p>
+
+<!-- <img class="small" src="img/NewMainLook.png"> -->
+
+
+<p> In your <strong>MainActivity</strong> class, add these class variables just <strong>above your onCreate()</strong> method:</p>
+
+
+<p><code>private EditText mLatInput = (EditText) findViewById(R.id.latitudeInput);</code></p>
+<p><code>private EditText mLongInput = (EditText) findViewById(R.id.longitudeInput);</code></p>
+<p><code>private EditText mMsgInput = (EditText) findViewById(R.id.msgInput);</code></p>
+<p><code>private Button mButton = (Button) findViewById(R.id.button);</code></p>
+
+<p> <strong>Inside your onCreate() method</strong>, look at where you create and save a SpecialMap object with hard-coded data. Delete that and add this this in its place:</p>
+
+<div class="android-demo">
+<code>mButton.setOnClickListener(new View.OnClickListener() {</code>
+<code>			<br>&nbsp;&nbsp;public void onClick(View v) {</code>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;//Grab the values from the input fields</code>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;double latitude = Double.valueOf(mLatInput.getText().toString());</code>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;double longitude = Double.valueOf(mLongInput.getText().toString());</code>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;String msg = mMsgInput.getText().toString();</code>
+<br>&nbsp;&nbsp;&nbsp;&nbsp;
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;//Create the SpecialMap object</code>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;SpecialMap newSpecialMap = new SpecialMap(latitude, longi</code>tude, msg);</code>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;newSpecialMap.saveSpecialMap();</code>
+<br>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;//Refresh the Activity, just so you can see some responsiveness</code>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;Intent intent = getIntent();</code>
+<code>					<br>&nbsp;&nbsp;&nbsp;&nbsp;startActivity(intent);</code>
+<code>		<br>&nbsp;&nbsp;	}</code>
+<code>	<br>});</code>
+</div>
+
+<p>Run the app again. Enter values for latitude and longitude, and a message that you want to add to the app.
+
+This time, the activity should refresh after you hit submit. </p>
+
+<p>Check your database for a new SpecialMap object created on the input you just submitted. </p>
+
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

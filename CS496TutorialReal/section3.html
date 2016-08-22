@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Getting started With Parse</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="index.html">
+                      Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="section3.html">Getting Started with Parse.com</a>
+                </li>
+                <li>
+                    <a href="section4.html">Creating the Marker Model</a>
+                </li>
+                <li>
+                    <a href="section5.html">Using User Input</a>
+                </li>
+                <li>
+                    <a href="section6.html">Using Google Maps</a>
+                </li>
+                <li>
+                    <a href="section7.html">Retrieving Objects</a>
+                </li>
+                <li>
+                    <a href="section8.html">Tying it all Together</a>
+                </li>
+                <li>
+                    <a href="section9.html">References</a>
+                </li>
+            </ul>
+        </div>        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Getting started with Parse.com</h1>
+                        <p>Today we will be using a database at Parse.com to create and save markers for the map.</p>
+                        <p>
+                              Parse.com is a Mobile Backend as a Service provider. It "provides back-end tools for mobile developers
+                              that help mobile developers store data in the cloud, manage identity log-ins, handle push notifications
+                              and run custom code in the cloud." (<a href="https://en.wikipedia.org/wiki/Parse_(company)">Wikipedia</a>)
+                        </p>
+
+                            <p>
+															 When developers store objects on Parse.com, Parse uses databases like MongoDb and RocksDb, but the
+															 developer would never know it: the Parse interface uses its own system.
+                               For example, say we wanted to create an object called "person" that had the values name,
+															 age, and isLiving. It would look something like this:
+														 	</p>
+
+															 <code>
+															<br> ParseObject person = new ParseObject("Person");
+															 <br>person.put("name", "Kevin Smith");
+															<br> person.put("age", 46);
+															<br> person.put("isLiving", true);
+															<br> person.saveInBackground();
+														    </code>
+
+                                <p><br>That's a very relaxe database query!</p>
+
+																<p>
+															 In the next section we're going to be creating a model class in our android project for the "SpecialMap" object that we will
+															 be using in this project, but make no mistake-- there is no need to declare what fields a Parse.com object can contain in advanced.
+															 You can make up new objects and new fields for your objects whenever you want, as long as you haven't already
+                               registered a ParseObject with that name in your application (more on that later).
+														 </p>
+
+														 <p>
+															 For now, let's prepare our Android Studio project to use Parse.com.
+														 </p>
+
+														 	<p>
+															 You can either <a href="https://parse.com/apps/quickstart#parse_data/mobile/android/native/new"> download
+																 the pre-configured starter project from parse</a>, or configure your own project by doing the following:
+															 </p>
+															 <ul>
+															<li> <p>
+
+																 <strong>1) </strong>
+																 Add these two lines to your build.gradle file in 'dependancies'
+																 (the build.gradle file that says Module: App next to it,
+																not the one that says 'Project: <ProjectName>' ):
+																</p>
+															</li>
+
+
+																 <code><p>compile 'com.parse.bolts:bolts-android:1.+'</p></code>
+																<p><code> compile 'com.parse:parse-android:1.+'
+															 </code>
+														 </p>
+
+
+														 <li> <p>
+														 <strong>2) </strong>
+														 Add these permissions to AndroidManifest.xml:
+														 <p class="code"><xmp><uses-permission android:name="android.permission.INTERNET" /></xmp></p>
+															 <p class="code"><xmp><uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /></xmp></p>
+
+														 </p></li>
+
+															<li><p><strong>3) </strong>
+															Create an account at Parse.com. After you create an account, go to <a href="https://dashboard.parse.com/apps">your Dashboard.</a></p>
+
+																<p>At your dashboard, click "Account Settings" and "Create Account Key."</p>
+
+																</p>
+
+																<img class="small" src="img/settings.png">
+
+															</p></li>
+
+														<li><p><strong>4) </strong>	In Android Studio, click file--> new --> Java class and call it "ParseApplication.java"
+															 In ParseApplication.java, paste in this code:
+														 </p>
+														 <code>
+																<p><xmp>package <yourPackageName>;</xmp></p>
+																<p>import android.app.Application;</p>
+																<p>	import com.parse.Parse;</p>
+																<p></p>
+																<p>public class ParseApplication extends Application {</p>
+																<p></p>
+																<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Override</p>
+																<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public void onCreate() {</p>
+																<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super.onCreate();</p>
+																<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parse.enableLocalDatastore(this);</p>
+																<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Parse.initialize(this, <strong>"my_app_id"</strong>, <strong>"my_client_key"</strong>);</p>
+																<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	 }</p>
+																<p>&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+															</code>
+
+															<p> Replace "my_app_id" and "my_account_key" with the app_id and account_key you see generated at your Parse.com dashboard.</p>
+															</li>
+														</ul>
+
+															 <p> Before we do anything else, let's just do a simple test to make sure that our database is working.</p>
+																<p>  In the <strong>onCreate()</strong> method in your MainActivity.java class, add the following lines:</p>
+																<code>
+																	&nbsp;ParseObject specialMap = new ParseObject("SpecialMap");
+																	<br>&nbsp;specialMap.put("latitude", 74.0059);
+																	<br>&nbsp;specialMap.put("longitude", 40.7128);
+																	<br>&nbsp;specialMap.put("msg", "You don't really need to create a model to save objects in Parse. ");
+																	<br>&nbsp;specialMap.saveInBackground();
+																	<br><br>&nbsp;ParseObject madeUpObject = new ParseObject("ThatsTrue");
+																	<br>&nbsp;madeUpObject.put("butStill", "But we make one will later, because you have to admit it keeps things organized.");
+																	<br>&nbsp;madeUpObject.saveInBackground();
+</code>
+																	<p> <strong>Run the project.</strong></p>
+
+																	<p> If you look in your database now, you should see the following two classes:</p>
+
+																	<img class="medium" src="img/SpecialMapClass.png">
+
+																	<img class="medium" src="img/thatsTrueClass.png">
+
+																	<p> Now, <strong>please erase all of the code that you just added to MainActivity,</strong> because what
+																	 we are about to do will in the next section will cause our app to crash if that code is left in.</p>
+
+                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

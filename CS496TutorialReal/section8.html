@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+    <title>Map Making- How Maps are Made</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="index.html">
+                      Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="section3.html">Getting Started with Parse.com</a>
+                </li>
+                <li>
+                    <a href="section4.html">Creating the Marker Model</a>
+                </li>
+                <li>
+                    <a href="section5.html">Using User Input</a>
+                </li>
+                <li>
+                    <a href="section6.html">Using Google Maps</a>
+                </li>
+                <li>
+                    <a href="section7.html">Retrieving Objects</a>
+                </li>
+                <li>
+                    <a href="section8.html">Tying it all Together</a>
+                </li>
+                <li>
+                    <a href="section9.html">References</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                      <h1>Tying it all together</h1>
+                      																		<p>Now we just have to add a community map button to our Main view to view all of the markers on our map.</p>
+
+                      																		In content_main.xml:
+                                                          <code>
+                      																		<xmp><Button</xmp>
+                      																				android:layout_width="wrap_content"
+                      																				<br>	android:layout_height="wrap_content"
+                      																				<br>	android:text="Map Buton"
+                      																				<br>	android:id="@+id/mapButton"
+                      																				<br>	android:layout_below="@+id/button"
+                      																				<br>	android:layout_centerHorizontal="true" />
+                                                            </code>
+                                                            	<br>
+                      																			<p>In MainActivity:</p>
+                                                            <code>
+                      																			//Above onCreate
+                      																			<br>Button mMapButton = (Button) findViewById(R.id.mapButton);
+                      <br>
+                      																			<br>//In onCreate
+                      																			<br>  mMapButton.setOnClickListener(new View.OnClickListener() {
+                      																			<br>&nbsp;&nbsp;    @Override
+                      																			<br>&nbsp;&nbsp;    public void onClick(View v) {
+                      																			<br>&nbsp;&nbsp;&nbsp;&nbsp;        Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                      																			<br>&nbsp;&nbsp;&nbsp;&nbsp;        startActivity(intent);
+                      																			<br>&nbsp;&nbsp;    }
+                      																			<br>});
+                                                          </code>
+
+                                                          <p> Now run your app, and take add as markers anywhere in the world to your backed-up map! </p>
+                      																			<p>Finally, we are done. Here is a screenshot I took of my phone of some markers I put on Japan:</p>
+                      																			<img class="medium" src="img/japan.png">
+
+                      																			<p> You can view the messeges on any of the markers by clicking on them. :)</p>
+
+                          																<h2> Thank you for doing my tutorial!	</h2>
+                      																		<p> &emsp; -Colleen</p> </span>
+
+                                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

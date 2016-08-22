@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Creating the Model</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="index.html">
+                      Introduction
+                    </a>
+                </li>
+                <li>
+                    <a href="section3.html">Getting Started with Parse.com</a>
+                </li>
+                <li>
+                    <a href="section4.html">Creating the Marker Model</a>
+                </li>
+                <li>
+                    <a href="section5.html">Using User Input</a>
+                </li>
+                <li>
+                    <a href="section6.html">Using Google Maps</a>
+                </li>
+                <li>
+                    <a href="section7.html">Retrieving Objects</a>
+                </li>
+                <li>
+                    <a href="section8.html">Tying it all Together</a>
+                </li>
+                <li>
+                    <a href="section9.html">References</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                      <h1>Retreiving the Markers</h1>
+                        <p><strong>Delete the 'onMapReady' function.</strong> We will replace it with a function called setUpMapIfNeeded.
+																		Add this to MapsActivity.class, <strong>outside of the onCreate method.</strong></p>
+
+                                    <div class="android-demo">
+																		private void setUpMapIfNeeded() {
+																		<br>&nbsp;&nbsp;// Do a null check to confirm that we have not already instantiated the map.
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;		if (mMap == null) {
+																		<br>&nbsp;&nbsp;	   // Try to obtain the map from the SupportMapFragment.
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		  mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				.getMap();
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		// Check if we were successful in obtaining the map.
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	 	if (mMap != null) {
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;			setUpMap();
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  		}//End of if (mMap != null)
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;		 }//End of if(mMap == null)
+																		<br>&nbsp;&nbsp;		}//end of setUpMapIfNeeded()
+                                  </div>
+
+																		<p> Now add this second function just below it: </p>
+
+                                    <div class="android-demo">
+																		//Set up the map with all markers and zoom in on the last one:
+																		<br>private void setUpMap() {
+																				<br>&nbsp;&nbsp;SpecialMap.findAllSpecialMaps(TAG, MapsActivity.this, new Runnable() {
+																					<br>&nbsp;&nbsp;	@Override
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	public void run() {
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		mAllSpecialMaps = SpecialMap.getSpecialMaps();
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		for (ParseObject SpecialMap : mAllSpecialMaps) {
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				double latitude = SpecialMap.getDouble("latitude");
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				double longitude = SpecialMap.getDouble("longitude");
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				String msg = SpecialMap.getString("msg");
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;			LatLng marker = new LatLng(latitude, longitude);
+																				  <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				mMap.addMarker(new MarkerOptions().position(marker).title(msg));
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+																					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	}
+																				<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		}
+																		<br>&nbsp;&nbsp;&nbsp;&nbsp;		});
+																		<br>}
+                                  </div>
+
+																		<p> Note that in this function, only one line is really executed: The call to our SpecialMap class's 'findAllSpecialMaps' function.
+																		If you take another take another look at our SpecialMaps class (look in <a href=section4.html>Creating the Marker Model</a>) we see that the
+																		last parameter of our findAllSpecialMaps function is 'final Runnable runnable'. <i>(Note: <strong>We don't have to use a runnable</strong> to acheive what we want to in this project, which I'll explain in a bit.)</i>
+
+																		<br><br> In <strong>the findAllSpecialMaps defintion</strong>,
+																		 the
+																    function 'done</strong>', which is located in FindCallback, the callback on 'specialMapsListQuery',
+																		a <strong>query</strong> that we see defined just above as <strong>the Parse.com
+																		query ParseQuery.getQuery</strong> on which we use our custom conditions,  is:
+																		<br>
+																		<code>
+																			<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  SpecialMaps = specialMaps;
+																			<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; context.runOnUiThread(runnable);
+																		</code>
+																	<br>
+
+																	 	<p>What a mouthful! </p>
+																		<p>And to make matters more confusing, notice <strong>in the Runnable object in MapsActivity.java,</strong> we use <strong>another</strong>
+																			 function that we defined in our SpecialMaps class, the function <strong>getSpecialMaps</strong>. Notice this line:
+																			 <br><br><code>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  mAllSpecialMaps = SpecialMap.getSpecialMaps();</code>
+																			 <br><br> and the <strong>definition for getSpecialMaps</strong>, defined in SpecialMaps.java, is:
+
+                                        <code>
+																					<xmp>public static List<SpecialMap> getSpecialMaps() {</xmp>
+																					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return mSpecialMaps;
+																					&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+																				&nbsp; &nbsp;<br>}
+                                      </code>
+
+
+																			<br>
+																			<br>
+
+																			Here is what's happening:
+																			<p><strong>1)</strong> SpecialMap.findAllSpecialMaps is called in setUpMap</p>
+
+																		<p>	<strong>2)</strong> specialMapsListQuery is run. That query asks Parse to return
+																			all of the queries of the objects in the SpecialMap class.
+																			Parse.com knows that the SpecialMap class refers to all of the objects named "SpecialMap"
+																			because our class SpecialMap is declared this way:
+																			<code>
+																				<br>&nbsp; &nbsp;&nbsp;@ParseClassName("SpecialMap")
+																				<br>&nbsp; &nbsp;&nbsp;public class SpecialMap <strong>extends ParseObject</strong>{
+                                        </code>
+																			</p>
+
+																			<p><strong>3)</strong> We use the Parse.com <strong>findInBackground</strong> method with a Parse.com <strong>FindCallback.</strong>
+																			<br>findInBackground assures that <strong>the network request is done on a background thread,</strong>
+																			 and <strong>runs its callback in the main UI thread.</strong></p>
+
+																			 <p> Explanation: By default, all components of the same Android application run in the same process and thread of execution,
+																			  called the main thread. It is the thread in which the application interacts with components from the Android UI toolkit, including
+																			the android.view package. But there is also the option to create other processes, such what we are creating here, a <strong>background process.</strong>
+																			"These processes have no direct impact on the user experience,
+																			and the system can kill them at any time to reclaim memory for a foreground, visible, or service process." (<a href="https://developer.android.com/guide/components/processes-and-threads.html">Citation</a>)
+																			The purpose of having the done function run in the main thread and the fetch run in a background thread is to ensure
+																			that the UI does not freeze while the fetch happens. (<a href="https://parseplatform.github.io/Parse-SDK-Android/api/">Citation</a>)
+																		 </p>
+
+																			 <p>Because 'done' happens in the main UI thread by default, we don't
+																				 <strong>need</strong> to use
+																			 a runnable. At the bottom of this section
+																			 I have an example of changes you can make to avoid using a runnable, which might be less confusing to look at.
+																		 The reason that I use runnables is because that way I can use the function differently in different activities.
+																	 </p>
+
+																	 <p><strong>4)</strong> We override the done function to specify what the callback should do after we have retrieved the  <xmp>List<specialMaps></xmp> object, which we
+																		 have assigned to be referred to as specialMaps during the fetch:
+																		 <code><br><br>public void done(List< SpecialMap > <strong>specialMaps</strong>, com.parse.ParseException e) {<br><br></code>
+																		 </p>
+
+																		 <p>5) We specify that if there are no errors during the fetch, we want this static class variable (found in the first line of our SpecialMap class)
+
+																			  <xmp>    private static List<SpecialMap> mSpecialMaps; </xmp>
+
+																				 to be assigned to the retrieved list:
+                                         <code>
+																				 <br>if (e == null) { //if no errors
+																	 	      <br> &nbsp;&nbsp;  mSpecialMaps = specialMaps;
+  																				<br> 	}
+																						<br>
+                                          </code>
+																				</p>
+																				<p> 6) We run the runnable that was sent in through the params:
+																					<br> In MapsActivity.java, the runnable specifies that it wants its own
+																					private list of SpecialMaps,
+																					called mAllSpecialMaps, to be
+																					set to the SpecialMaps class's static mSpecialMaps:
+																					<br>
+																					<br><code>mAllSpecialMaps = SpecialMap.getSpecialMaps();</code>
+																					<br>
+
+																				</p>
+
+																				<p>7) Still in the runnable, for each SpecialMaps ParseObject in mAllMaps,
+																				the ParseObject methods getDouble and getString are used to retrieve their
+																				latitude, longitude, and message:
+
+																				<code><br>for (ParseObject SpecialMap : mAllSpecialMaps) {
+            														<br> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 	double latitude = SpecialMap.getDouble("latitude");
+            														<br> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;	double longitude = SpecialMap.getDouble("longitude");
+                                      </code>
+																			</p>
+
+																			<p> and we make them each into a LatLng object called marker-- this is something in the android API to represent a
+																				set of latitude and longitude coordinates-- and use it in the addMarker method on our map
+																				to put the marker at the right location, while setting the title of the markers to our message.
+																				We also move the camera to focus over the last marker in the list, just because.</p>
+                                        <code>
+																				<br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;LatLng marker = new LatLng(latitude, longitude);
+																				<br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;mMap.addMarker(new MarkerOptions().position(<strong>marker</strong>).title(<strong>msg</strong>));
+																				<br>&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+																			<br>}
+                                    </code>
+
+
+																		</p>
+
+
+																			</p>
+
+
+
+
+
+
+																	 </p>
+
+
+																	 		<h2> Implementation that does not use a Runnable </h2>
+
+																			 Here is a version of this that I've tested without a runnable that work fine
+																			 (note that we have to make quite a few changes to what's static and whatnot):
+
+																			 <p> In the MapsActivity class, setUpMap() is changed to:</p>
+                                       <code>
+	 																		 <br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;private void setUpMap() {
+			 																 	<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;		SpecialMap.findAllSpecialMaps(MapsActivity.class.getSimpleName(), MapsActivity.this);
+	 																 		<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;}
+                                    </code>
+
+																			<p>And this function is also added to the MapsActivity class (note that it needs to be declared static):</p>
+                                      <code>
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;public static void gotSpecialMaps(){
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mAllSpecialMaps = SpecialMap.getSpecialMaps();
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for (ParseObject SpecialMap : mAllSpecialMaps) {
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		double latitude = SpecialMap.getDouble("latitude");
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		double longitude = SpecialMap.getDouble("longitude");
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		String msg = SpecialMap.getString("msg");
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		LatLng marker = new LatLng(latitude, longitude);
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		mMap.addMarker(new MarkerOptions().position(marker).title(msg));
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;}
+                                    </code>
+																			<p> And mAllSpecialMaps (also in MapsActivity) is changed from
+                                        <code>
+																					<xmp>private List<SpecialMap> mAllSpecialMaps;</xmp>
+                                          </code>
+																						to
+                                            <code>
+																				<xmp>private static List<SpecialMap> mAllSpecialMaps;</xmp>
+                                        </code>
+
+																					<p> In getSpecialMaps.java, we add this line somewhere about our class declaration:</p>
+                                          <code>
+																					<xmp>import com.<YOUR PACKAGE NAME>.<PATH TO YOUR MAPS ACTIVITY>.MapsActivity;</xmp>
+                                          </code>
+
+
+
+																			<p>And in the getSpecialMaps class, here is what the findAllSpecialMaps function would like:</p>
+                                      <code>
+																			&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	public static void findAllSpecialMaps(final String tag, final Activity context) {
+																			<br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;specialMapsListQuery().findInBackground(new FindCallback< SpecialMap >() {
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		 @Override
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		public void done(List< SpecialMap > specialMaps, com.parse.ParseException e) {
+																			<br> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				if (e == null) {
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;						mSpecialMaps = specialMaps;
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;						MapsActivity.gotSpecialMaps();
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				} else {
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;						Log.v(e);
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				}
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;		}
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;	&nbsp;&nbsp;&nbsp;&nbsp;});
+																			<br>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+                                    </code>
+
+																			<p>Note that function is also static, and we changed it from private to public. The only reason that I use runnables is because that way I can use the same
+																				functions in different activities and use them differently. Also note that in the function above, there isn't really a space between the brackets in
+
+                                      <code>public void done(List< SpecialMap > specialMaps</code>
+
+                                      .I added that for display purposes here, but you need to remove the spaces between the brackets if you want your app to run.
+
+                                     </p>
+
+                                                           <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>
